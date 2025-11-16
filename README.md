@@ -1,4 +1,4 @@
-# prior-authorization-ml
+# Prior Authorization Approval Prediction (Machine Learning Project)
 Machine learning project predicting prior authorization approval using synthetic healthcare data.
 Prior Authorization Approval Prediction (Machine Learning Project)
 
