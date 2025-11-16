@@ -1,6 +1,5 @@
 # Prior Authorization Approval Prediction (Machine Learning Project)
 Machine learning project predicting prior authorization approval using synthetic healthcare data.
-Prior Authorization Approval Prediction (Machine Learning Project)
 
 This project builds a machine learning model to predict prior authorization (PA) approval outcomes using synthetic but realistic healthcare data.
 It demonstrates end-to-end data science skills across:
