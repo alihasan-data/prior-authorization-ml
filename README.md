@@ -1,180 +1,111 @@
-# Prior Authorization Approval Prediction (Machine Learning Project)
-Machine learning project predicting prior authorization approval using synthetic healthcare data.
+# Prior Authorization Approval Prediction (Synthetic Healthcare Data)
 
-This project builds a machine learning model to predict prior authorization (PA) approval outcomes using synthetic but realistic healthcare data.
-It demonstrates end-to-end data science skills across:
+This project simulates a realistic prior authorization (PA) workflow and builds machine learning models to predict whether a PA request will be **approved** or **not approved** based on clinical and utilization features.
 
-Healthcare data preprocessing
+---
 
-Feature engineering
+## 1. Problem
 
-Model development
+Prior authorization decisions depend on:
 
-Evaluation (ROC, AUC, confusion matrix)
+- Drug and drug class  
+- Diagnosis (ICD-10)  
+- Prescriber specialty  
+- Formulary tier  
+- Step therapy history  
+- Previous PA denials  
+- Days’ supply and prior fill history  
 
-Deployment-ready project structure
+The goal of this project is to:
 
-Integration with Python ML stack
+> **Predict the probability that a PA request will be approved**, so health plans or utilization management teams could prioritize reviews or automate low-risk decisions.
 
-This project bridges PharmD clinical expertise with AI + data science capability, creating a strong portfolio piece for healthcare ML roles.
+---
 
-📁 Project Structure
-prior-authorization-ml/
-│
-├── data/                     # Synthetic PA dataset
-├── models/                   # Saved Logistic Regression / Random Forest models
-├── notebooks/
-│   └── Untitled.ipynb        # Main modeling notebook
-├── src/
-│   ├── generate_synthetic_data.py   # Synthetic data generator
-│   └── (other .py files)      
-│
-├── LICENSE
-├── README.md
-└── .gitignore
+## 2. Data
 
-🎯 Project Goal
+The dataset is **synthetic**, generated with a Python script:
 
-Insurance prior authorizations cause delays in patient care.
-This project simulates a healthcare dataset and builds ML models to predict whether a PA request will be:
+- File: `src/generate_synthetic_data.py`  
+- Output: `data/pa_synthetic_data.csv` (3,000 rows)
 
-Approved (1)
+Key columns:
 
-Denied (0)
+- `age`, `gender`  
+- `drug_name`, `drug_class`  
+- `dx_code`, `dx_category`  
+- `prescriber_specialty`  
+- `formulary_tier`  
+- `step_therapy_count`  
+- `quantity_limit_flag`  
+- `previous_pa_denials`  
+- `days_supply`  
+- `prior_fill_history_months`  
+- `plan_type`  
+- `outcome` (`approve`, `deny`, `info_needed`)
 
-The purpose is to demonstrate:
+Target used in the model:
 
-Applied machine learning
+- `target_binary` = 1 if `outcome == "approve"`, else 0
 
-Data science workflow
+---
 
-Understanding of healthcare data structures
+## 3. Methods
 
-AI-augmented PA decision support
+Notebook: `notebooks/01_pa_model.ipynb`
 
-🧪 Dataset (Synthetic)
+### Steps
 
-The dataset includes realistic features such as:
+1. Load and explore data (`df.info()`, value counts, simple plots)  
+2. Create binary label (`approve` vs non-approve)  
+3. Split into train/test with `train_test_split`  
+4. Build preprocessing pipeline using `ColumnTransformer`:
+   - Numeric features: passthrough  
+   - Categorical features: `OneHotEncoder(handle_unknown="ignore")`  
+5. Train models:
+   - Logistic Regression (`class_weight="balanced"`)  
+   - Random Forest (`class_weight="balanced"`, 300 trees)  
+6. Evaluate:
+   - `classification_report`  
+   - `confusion_matrix` heatmaps  
+   - ROC AUC  
+   - ROC curves (`RocCurveDisplay`)  
+7. Save fitted pipelines with `joblib`:
+   - `models/log_reg_pipeline.joblib`  
+   - `models/rf_pipeline.joblib`
 
-Patient age / sex
+---
 
-Medication requested
+## 4. Results (example wording)
 
-Drug class
+Because the dataset is fully synthetic and labels are partially random, overall performance is modest:
 
-ICD-10 diagnosis code
+- Logistic Regression: ROC AUC ≈ 0.48  
+- Random Forest: ROC AUC ≈ 0.44  
 
-Prescriber specialty
+The goal of the project is to demonstrate the **end-to-end workflow**:
 
-Days supply
+- Structured healthcare data ingestion  
+- Feature preprocessing  
+- Model training and evaluation  
+- Saving models for downstream apps (e.g. Flask API or batch scoring)
 
-Lines of therapy
+With real, clinically curated data, the same pipeline can be re-used and tuned for meaningful performance.
 
-Insurance plan type
+---
 
-Historical approvals
+## 5. How this aligns with my background (PharmD)
 
-Generated using src/generate_synthetic_data.py.
+As a PharmD with hands-on pharmacy experience, I designed the features and workflow to reflect realistic PA decision factors:
 
-🤖 Models Trained
+- Formulary tier and step therapy  
+- Previous denials  
+- Prescriber type and diagnosis  
+- Prior fill history and days’ supply  
 
-Two baseline models were developed:
+This project combines:
 
-1. Logistic Regression
+- **Clinical domain knowledge** (how PAs actually work)  
+- **Python + scikit-learn** skills (pipelines, modeling, evaluation)  
 
-Interpretable
-
-Fast
-
-Good baseline in healthcare modeling
-
-2. Random Forest
-
-Handles nonlinear relationships
-
-Captures complex interactions
-
-Both models were evaluated using:
-
-ROC Curve
-
-AUC Score
-
-Precision / Recall / F1-score
-
-Confusion Matrix
-
-📈 Results Summary
-
-(Replace numbers with your actual results if you want — or leave general.)
-
-Logistic Regression AUC: ~0.48
-
-Random Forest AUC: ~0.44
-
-Interpretation:
-Because data is synthetic and intentionally noisy, these models show modest performance — but they correctly illustrate the ML workflow and can be improved via:
-
-Feature encoding
-
-Hyperparameter tuning
-
-Additional domain-specific features
-
-Better synthetic data generation
-
-🛠️ Tech Stack
-
-Python
-
-Pandas
-
-NumPy
-
-Scikit-Learn
-
-Matplotlib
-
-Seaborn
-
-XGBoost (optional for future)
-
-Jupyter Notebook
-
-🚀 How to Run the Project
-1. Clone the repo:
-git clone https://github.com/alihasan-data/prior-authorization-ml.git
-
-2. Install dependencies:
-pip install -r requirements.txt   (you can add this later)
-
-3. Generate synthetic dataset:
-python src/generate_synthetic_data.py
-
-4. Open the notebook:
-notebooks/01_prior_authorization_model.ipynb.ipynb
-
-
-Run all cells to train and evaluate the models.
-
-🔮 Future Enhancements
-
-Add XGBoost / LightGBM models
-
-Hyperparameter tuning
-
-Bayesian optimization
-
-Deploy model via FastAPI
-
-Build a simple Streamlit dashboard
-
-Improve synthetic data realism
-
-Add SHAP explainability
-
-👤 Author
-
-Ali Hasan, PharmD
-Pharmacist → AI/Data Science Transition
-Focusing on ML applications in healthcare, pharmacy, and insurance workflows.
+and serves as a foundation for more advanced PA analytics or decision-support tools.
