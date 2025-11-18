@@ -152,7 +152,7 @@ pip install -r requirements.txt   (you can add this later)
 python src/generate_synthetic_data.py
 
 4. Open the notebook:
-notebooks/Untitled.ipynb
+notebooks/01_prior_authorization_model.ipynb.ipynb
 
 
 Run all cells to train and evaluate the models.
