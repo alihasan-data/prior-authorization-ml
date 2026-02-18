@@ -2,6 +2,7 @@
 
 This project simulates a realistic prior authorization (PA) workflow and builds machine learning models to predict whether a PA request will be **approved** or **not approved** based on clinical and utilization features.
 
+This project uses fully synthetic, simulated healthcare data created for educational purposes only. No real patient data, employer data, or protected health information (PHI) was used.
 ---
 
 ## 1. Problem
